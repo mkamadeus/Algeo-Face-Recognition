@@ -48,17 +48,17 @@ def batch_extractor(images_path, pickled_db_path="features.pck"):
         result[name] = extract_features(f)
     
     # saving all our feature vectors in pickled file
-    with open(pickled_db_path, 'w') as fp:
+    with open(pickled_db_path, 'wb') as fp:
         pickle.dump(result, fp)
 
 class Matcher(object):
 
     def __init__(self, pickled_db_path="features.pck"):
-        with open(pickled_db_path) as fp:
+        with open(pickled_db_path, 'rb') as fp:
             self.data = pickle.load(fp)
         self.names = []
         self.matrix = []
-        for k, v in self.data.iteritems():
+        for k, v in self.data.items():
             self.names.append(k)
             self.matrix.append(v)
         self.matrix = np.array(self.matrix)
