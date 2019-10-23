@@ -1,7 +1,5 @@
 import cv2
 import numpy as np
-import scipy
-from scipy.misc import imread
 import pickle
 import random
 import os
@@ -9,14 +7,14 @@ import matplotlib.pyplot as plt
 
 # Feature extractor
 def extract_features(image_path, vector_size=32):
-    image = imread(image_path, mode="RGB")
+    image = cv2.imread(image_path, mode="RGB")
     try:
         # Using KAZE, cause SIFT, ORB and other was moved to additional module
         # which is adding addtional pain during install
         alg = cv2.KAZE_create()
         # Dinding image keypoints
         kps = alg.detect(image)
-        # Getting first 32 of them. 
+        # Getting first 32 of them. x 
         # Number of keypoints is varies depend on image size and color pallet
         # Sorting them based on keypoint response value(bigger is better)
         kps = sorted(kps, key=lambda x: -x.response)[:vector_size]
@@ -85,7 +83,7 @@ def show_img(path):
     plt.show()
     
 def run():
-    images_path = 'resources/images/'
+    images_path = './'
     files = [os.path.join(images_path, p) for p in sorted(os.listdir(images_path))]
     # getting 3 random images 
     sample = random.sample(files, 3)
