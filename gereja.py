@@ -1,20 +1,23 @@
 import cv2
 import numpy as np
+import scipy
+from scipy import spatial
 import pickle
 import random
 import os
 import matplotlib.pyplot as plt
+import math
 
 # Feature extractor
 def extract_features(image_path, vector_size=32):
-    image = cv2.imread(image_path, mode="RGB")
+    image = cv2.imread(image_path, 1)
     try:
         # Using KAZE, cause SIFT, ORB and other was moved to additional module
         # which is adding addtional pain during install
         alg = cv2.KAZE_create()
         # Dinding image keypoints
         kps = alg.detect(image)
-        # Getting first 32 of them. x 
+        # Getting first 32 of them. 
         # Number of keypoints is varies depend on image size and color pallet
         # Sorting them based on keypoint response value(bigger is better)
         kps = sorted(kps, key=lambda x: -x.response)[:vector_size]
@@ -62,28 +65,47 @@ class Matcher(object):
         self.matrix = np.array(self.matrix)
         self.names = np.array(self.names)
 
-    def cos_cdist(self, vector):
-        # getting cosine distance between search image and images database
-        v = vector.reshape(1, -1)
-        return scipy.spatial.distance.cdist(self.matrix, v, 'cosine').reshape(-1)
+    def euclidean_distance(self, vector):
+        # getting euclidean distance between search image and images database
 
+        dist = []        
+
+        for i in range(15):
+            v = vector.reshape(1,-1)
+            s = self.matrix[i].reshape(1,-1)
+            d = 0
+            for j in range (len(v)):
+                d += (s[j]-v[j])**2
+            dist.append(d**0.5)
+        
+        dist = np.array(dist)
+
+        return dist
 
     def match(self, image_path, topn=5):
         features = extract_features(image_path)
-        img_distances = self.cos_cdist(features)
+        # print(features)
+        print(len(features))
+        img_distances = self.euclidean_distance(features)
+        # print(img_distances)
+        print(len(img_distances))
         # getting top 5 records
         nearest_ids = np.argsort(img_distances)[:topn].tolist()
-        nearest_img_paths = self.names[nearest_ids].tolist()
+        # print(nearest_ids)
+        print(len(nearest_ids))
+        nearest_img_paths = [self.names for _,self.names in sorted(zip(nearest_ids,self.names))]
+        img_distances = [img_distances for _,img_distances in sorted(zip(nearest_ids,img_distances))]
+        # nearest_img_paths = self.names[nearest_ids].tolist()
 
-        return nearest_img_paths, img_distances[nearest_ids].tolist()
+        return nearest_img_paths, img_distances
 
 def show_img(path):
-    img = imread(path, mode="RGB")
+    img = cv2.imread(path, 1)
     plt.imshow(img)
     plt.show()
     
 def run():
-    images_path = './'
+    images_path = 'resources/images/'
     files = [os.path.join(images_path, p) for p in sorted(os.listdir(images_path))]
     # getting 3 random images 
     sample = random.sample(files, 3)
