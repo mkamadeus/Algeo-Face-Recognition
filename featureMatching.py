@@ -2,6 +2,7 @@ import math
 import pickle
 import numpy as np
 import featureExtraction as fe
+import scipy.spatial
 
 class Matcher(object):
 
@@ -11,75 +12,87 @@ class Matcher(object):
             self.data = pickle.load(fp)
 
         self.names = []
-        self.matrix = []
+        self.features = []
+
+        # Convert pickled data to array
         for k, v in self.data.items():
             self.names.append(k)
-            self.matrix.append(v)
-        self.matrix = np.array(self.matrix)
-        self.names = np.array(self.names)
-
-    def cos_cdist(self, vector):
-        # getting cosine distance between search image and images database
-        v = vector.reshape(len(vector),1)
-        lengthv = 0
-        print(len(v))
-        for i in range(2048):
-            lengthv += v[i]**2
-        lengthv = math.sqrt(lengthv)
-        a = []
-        for i in range(len(self.matrix)):
-            b = 0
-            w = self.matrix[i].reshape(len(vector),1)
-            lengthw = 0
-            for j in range(2048):
-                lengthw += w[j]**2
-                b += v[j]*w[j]
-            lengthw = math.sqrt(lengthw)
-            c = b/(lengthv*lengthw)
-            a.append(1-c)
-        a = np.array(a).reshape(-1)
-        print(a)
-        return a
-
-    def euclidean_distance(self, vector):
-
-        # getting euclidean distance between search image and images database
-        dist = []        
-
-        for i in range(15):
-            v = vector.reshape(1,-1)
-            s = self.matrix[i].reshape(1,-1)
-            d = 0
-            for j in range (len(v)):
-                d += (s[j]-v[j])**2
-            dist.append(d**0.5)
+            self.features.append(v)
         
-        dist = np.array(dist)
+        # Convert array to NumPy array
+        self.names = np.array(self.names)
+        self.features = np.array(self.features)
 
-        return dist
+    def debug(self):
+        print(self.data)
 
-    def match(self, image_path, topn=5):
+    # Euclidean Similarity Algorithm
+    def euclidean_distance(self, vector):
+        match_list = []
+
+        query_vector = vector.reshape(len(vector),-1)
+        for i in range(len(self.features)):
+            database_vector = self.features[i].reshape(len(vector),-1)
+            delta = 0.0
+            for j in range (len(database_vector)):
+                delta += (database_vector[j]-query_vector[j])**2
+
+            match_list.append(1/(1+delta**0.5))
+        
+        match_list = np.array(match_list).reshape(-1)
+
+        # Returns dist for each comparison
+        return match_list
+
+    # Cosine Similarity Algorithm
+    def cosine_similarity(self, vector):
+        match_list = []
+
+        query_vector = vector.reshape(len(vector),1)
+
+        # Calculate sqrt(sigma(x))
+        sqrt_query_sum = 0.0
+        for i in range(len(query_vector)):
+            sqrt_query_sum += query_vector[i]**2
+
+        sqrt_query_sum**=0.5
+
+        for i in range(len(self.features)):
+            
+            product_sum = 0.0
+            database_vector = self.features[i].reshape(len(vector),1)
+            sqrt_database_sum = 0
+            for j in range(len(database_vector)):
+                sqrt_database_sum += database_vector[j]**2 # Calculate sqrt(sigma(y))
+                product_sum += query_vector[j]*database_vector[j] # Calculate sigma(xy)
+            sqrt_database_sum **= 0.5
+            
+            c = product_sum/(sqrt_query_sum*sqrt_database_sum)
+            match_list.append(c)
+
+        match_list = np.array(match_list).reshape(-1)
+        return match_list
+
+
+    def match_euclidean_similarity(self, image_path, topn=5):
+        # Compare image_path with other images
         features = fe.extract_features(image_path)
-        # print(features)
-        print(len(features))
         img_distances = self.euclidean_distance(features)
-        # print(img_distances)
-        print(len(img_distances))
-        # getting top 5 records
-        nearest_ids = np.argsort(img_distances)[:topn].tolist()
-        # print(nearest_ids)
-        print(len(nearest_ids))
-        nearest_img_paths = [self.names for _,self.names in sorted(zip(nearest_ids,self.names))]
-        img_distances = [img_distances for _,img_distances in sorted(zip(nearest_ids,img_distances))]
-        # nearest_img_paths = self.names[nearest_ids].tolist()
 
-        return nearest_img_paths, img_distances
-    
-    def match_cost(self, image_path, topn=5):
+        # Slice list with len() = topn after sorted descending
+        nearest_img_index = np.argsort(img_distances)[::-1][:topn].tolist()
+        print(nearest_img_index)
+        nearest_img_paths = self.names[nearest_img_index].tolist()
+
+        return nearest_img_paths, img_distances[nearest_img_index].tolist()
+            
+    def match_cosine_similarity(self, image_path, topn=5):
+        # Compare image_path with other images
         features = fe.extract_features(image_path)
-        img_distances = self.cos_cdist(features)
-        # getting top 5 records
-        nearest_ids = np.argsort(img_distances)[:topn].tolist()
-        nearest_img_paths = self.names[nearest_ids].tolist()
+        img_distances = self.cosine_similarity(features)
 
-        return nearest_img_paths, img_distances[nearest_ids].tolist()
+        # Slice list with len() = topn after sorted descending
+        nearest_img_index = np.argsort(img_distances)[::-1][:topn].tolist()
+        nearest_img_paths = self.names[nearest_img_index].tolist()
+
+        return nearest_img_paths, img_distances[nearest_img_index].tolist()
