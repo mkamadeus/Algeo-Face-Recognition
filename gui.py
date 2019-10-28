@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-import matplotlib
-matplotlib.use("TkAgg")
+import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure 
+from matplotlib.figure import Figure
 
 # Reference : How to Embed a Matplotlib Graph to Your TkInter GUI 
 # (https://pythonprogramming.net/how-to-embed-matplotlib-graph-tkinter-gui/)
@@ -41,28 +41,10 @@ class Start(tk.Frame):
         rbutton1 = ttk.Radiobutton(self, text="Euclidean Distance", variable=r, value=1, width=20).grid(row=2, column=1)
         rbutton2 = ttk.Radiobutton(self, text="Cosine Similarity", variable=r, value=2, width=20).grid(row=3, column=1)
 
-        button1 = ttk.Button(self, text="OK", command=lambda: controller.showFrame(eucliMethod) if r==1 else controller.showFrame(cosMethod)).grid(row=2, column=3)
+        button1 = ttk.Button(self, text="OK", command=lambda: controller.showFrame(eucliMethod) if r==2 else controller.showFrame(eucliMethod)).grid(row=2, column=3)
         checkbox = tk.Checkbutton(self, text="Randomize Input", width=24).grid(row=4,column=3)
 
         self.grid_columnconfigure(0, minsize=16)
-
-#class Picture(tk.Frame):
-#   def __init__ (self, parent, controller):
-#        tk.Frame.__init__(self, parent)
-#        choice1 = tk.Checkbutton(self, text="Random").grid(row=0)
-#        choice2 = tk.Checkbutton(self, text="Input").grid(row=1)
-
-#class Method(tk.Frame):
-#    def __init__ (self, parent, controller):
-#        tk.Frame.__init__(self, parent)
-#        label = tk.Label(self, text="Choose a Method")
-#        label.pack(pady=10,padx=10)
-
-#        button1 = ttk.Button(self, text="Eulidean Distance", command=lambda: controller.showFrame(eucliMethod))
-#        button1.pack()
-
-#       button2 = ttk.Button(self, text="Cosine Similarity", command=lambda: controller.showFrame(cosMethod))
-#        button2.pack()
 
 class eucliMethod(tk.Frame):
     def __init__ (self, parent, controller):
@@ -78,16 +60,15 @@ class eucliMethod(tk.Frame):
         button3 = tk.Button(self, text="Back to The Start Page", command=lambda: controller.showFrame(Start))
         button3.pack()
 
-        #f = Figure(figsize=(5,5), dpi=100)
-        #a = f.add_subplot(111)
+        img_arr = mpimg.imread('resources/images/alexandra daddario0.jpg')
+        
+        f = Figure()
+        a = f.add_subplot(111)
+        a.imshow(img_arr)
 
-        #canvas = FigureCanvasTkAgg(f, self)
-        #canvas.show()
-        #canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
-
-        #toolbar = NavigationToolbar2TkAgg (canvas, self)
-        #toolbar.update()
-        #canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        canvas = FigureCanvasTkAgg(f, master=self)
+        canvas.draw()
+        canvas.get_tk_widget().pack()
 
 class cosMethod(tk.Frame):
     def __init__ (self, parent, controller):
