@@ -5,6 +5,9 @@ matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure 
 
+# Reference : How to Embed a Matplotlib Graph to Your TkInter GUI 
+# (https://pythonprogramming.net/how-to-embed-matplotlib-graph-tkinter-gui/)
+
 class faceRecognition (tk.Tk):
     def __init__ (self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -40,7 +43,7 @@ class Method(tk.Frame):
         label = tk.Label(self, text="Choose a Method")
         label.pack(pady=10,padx=10)
 
-        button1 = ttk.Button(self, text="Euclidean Distance", command=lambda: controller.showFrame(eucliMethod))
+        button1 = ttk.Button(self, text="Eulidean Distance", command=lambda: controller.showFrame(eucliMethod))
         button1.pack()
 
         button2 = ttk.Button(self, text="Cosine Similarity", command=lambda: controller.showFrame(cosMethod))
@@ -58,7 +61,7 @@ class eucliMethod(tk.Frame):
         button2 = ttk.Button(self, text="Next")
         button2.pack()
 
-        button3 = ttk.Button(self, text="Back to The Start Page")
+        button3 = ttk.Button(self, text="Back to The Start Page", command=lambda: controller.showFrame(Picture))
         button3.pack()
 
         #f = Figure(figsize=(5,5), dpi=100)
@@ -75,6 +78,8 @@ class eucliMethod(tk.Frame):
 class cosMethod(tk.Frame):
     def __init__ (self, parent, controller):
         tk.Frame.__init__(self, parent)
+        label = tk.Label(self, text="Cosine Similarity")
+        label.pack(pady=10,padx=10)
 
         button1 = ttk.Button(self, text="Prev")
         button1.pack()
@@ -82,7 +87,7 @@ class cosMethod(tk.Frame):
         button2 = ttk.Button(self, text="Next")
         button2.pack()
 
-        button3 = ttk.Button(self, text="Back to The Start Page")
+        button3 = ttk.Button(self, text="Back to The Start Page", command=lambda: controller.showFrame(Picture))
         button3.pack()
 
 master = faceRecognition()
