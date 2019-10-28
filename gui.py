@@ -20,34 +20,49 @@ class faceRecognition (tk.Tk):
 
         self.frames = {}
 
-        for F in (Picture, Method, eucliMethod, cosMethod):
+        for F in (Start, eucliMethod, cosMethod):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.showFrame(Method)
+        self.showFrame(Start)
 
     def showFrame (self, cont):
         frame = self.frames[cont]
         frame.tkraise()
 
-class Picture(tk.Frame):
+class Start(tk.Frame):
     def __init__ (self, parent, controller):
         tk.Frame.__init__(self, parent)
-        choice1 = tk.Checkbutton(self, text="Random").grid(row=0)
-        choice2 = tk.Checkbutton(self, text="Input").grid(row=1)
+        label = tk.Label(self, text="Choose a method: ")
+        label.grid(row=0, column=1)
 
-class Method(tk.Frame):
-    def __init__ (self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Choose a Method")
-        label.pack(pady=10,padx=10)
+        r = tk.IntVar()
+        rbutton1 = ttk.Radiobutton(self, text="Euclidean Distance", variable=r, value=1, width=20).grid(row=2, column=1)
+        rbutton2 = ttk.Radiobutton(self, text="Cosine Similarity", variable=r, value=2, width=20).grid(row=3, column=1)
 
-        button1 = ttk.Button(self, text="Eulidean Distance", command=lambda: controller.showFrame(eucliMethod))
-        button1.pack()
+        button1 = ttk.Button(self, text="OK", command=lambda: controller.showFrame(eucliMethod) if r==1 else controller.showFrame(cosMethod)).grid(row=2, column=3)
+        checkbox = tk.Checkbutton(self, text="Randomize Input", width=24).grid(row=4,column=3)
 
-        button2 = ttk.Button(self, text="Cosine Similarity", command=lambda: controller.showFrame(cosMethod))
-        button2.pack()
+        self.grid_columnconfigure(0, minsize=16)
+
+#class Picture(tk.Frame):
+#   def __init__ (self, parent, controller):
+#        tk.Frame.__init__(self, parent)
+#        choice1 = tk.Checkbutton(self, text="Random").grid(row=0)
+#        choice2 = tk.Checkbutton(self, text="Input").grid(row=1)
+
+#class Method(tk.Frame):
+#    def __init__ (self, parent, controller):
+#        tk.Frame.__init__(self, parent)
+#        label = tk.Label(self, text="Choose a Method")
+#        label.pack(pady=10,padx=10)
+
+#        button1 = ttk.Button(self, text="Eulidean Distance", command=lambda: controller.showFrame(eucliMethod))
+#        button1.pack()
+
+#       button2 = ttk.Button(self, text="Cosine Similarity", command=lambda: controller.showFrame(cosMethod))
+#        button2.pack()
 
 class eucliMethod(tk.Frame):
     def __init__ (self, parent, controller):
@@ -55,13 +70,12 @@ class eucliMethod(tk.Frame):
         label = tk.Label(self, text="Euclidean Distance")
         label.pack(pady=10, padx=10)
 
-        button1 = ttk.Button(self, text="Prev")
-        button1.pack()
+        button1 = tk.Button(self, text="Prev").pack()
 
-        button2 = ttk.Button(self, text="Next")
+        button2 = tk.Button(self, text="Next")
         button2.pack()
 
-        button3 = ttk.Button(self, text="Back to The Start Page", command=lambda: controller.showFrame(Picture))
+        button3 = tk.Button(self, text="Back to The Start Page", command=lambda: controller.showFrame(Start))
         button3.pack()
 
         #f = Figure(figsize=(5,5), dpi=100)
@@ -79,16 +93,16 @@ class cosMethod(tk.Frame):
     def __init__ (self, parent, controller):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Cosine Similarity")
-        label.pack(pady=10,padx=10)
+        label.grid(row=1,column=5)
 
         button1 = ttk.Button(self, text="Prev")
-        button1.pack()
+        button1.grid(row=5,column=1)
 
         button2 = ttk.Button(self, text="Next")
-        button2.pack()
+        button2.grid(row=5,column=10)
 
-        button3 = ttk.Button(self, text="Back to The Start Page", command=lambda: controller.showFrame(Picture))
-        button3.pack()
+        button3 = ttk.Button(self, text="Back to The Start Page", command=lambda: controller.showFrame(Start))
+        button3.grid(row=10,column=5)
 
 master = faceRecognition()
 master.mainloop()
