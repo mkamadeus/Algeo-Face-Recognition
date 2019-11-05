@@ -31,13 +31,27 @@ class Matcher(object):
         match_list = []
 
         query_vector = vector.reshape(len(vector),-1)
+        # Normalize vector
+        query_norm=0.0
+        for i in range(len(query_vector)):
+            query_norm+=query_vector[i]**2
+        query_norm**=0.5
+        query_vector=[x/query_norm for x in query_vector]
+
         for i in range(len(self.features)):
             database_vector = self.features[i].reshape(len(vector),-1)
-            delta = 0.0
-            for j in range (len(database_vector)):
-                delta += (database_vector[j]-query_vector[j])**2
+            # Normalize vector
+            database_norm=0.0
+            for i in range(len(database_vector)):
+                database_norm+=database_vector[i]**2
+            database_norm**=0.5
+            database_vector=[x/database_norm for x in database_vector]
 
-            match_list.append(1/(1+delta**0.5))
+            dist = 0.0
+            for j in range (len(database_vector)):
+                dist += (database_vector[j]-query_vector[j])**2
+
+            match_list.append(1/(1+dist**0.5))
         
         match_list = np.array(match_list).reshape(-1)
 
