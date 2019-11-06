@@ -23,18 +23,22 @@ def printAsDecimal(val):
 
 
 settings = pi.promptInput()
-images_path = 'resources/images/'
-files = [os.path.join(images_path, p) for p in sorted(os.listdir(images_path))]
+database_path = 'resources/database/'
+query_path = 'resources/query/'
+
+database_images = [os.path.join(database_path, p) for p in sorted(os.listdir(database_path))]
+query_images = [os.path.join(query_path, p) for p in sorted(os.listdir(query_path))]
 
 if(settings['extract_database']):
     # Extract features to features.pck
-    fe.batch_extractor(images_path)
+    fe.batch_extractor(database_path)
 
 # Image matching
 ma = fm.Matcher('features.pck')
 
 # Getting random images for query 
-sample = random.sample(files, 1)
+sample = random.sample(query_images, 1)
+
 
 # Setting threshold
 threshold = 0.0
@@ -72,4 +76,4 @@ for s in sample:
             print('NO')
 
         # Show image in directory
-        showImage(os.path.join(images_path, names[i]))
+        showImage(os.path.join(database_path, names[i]))
