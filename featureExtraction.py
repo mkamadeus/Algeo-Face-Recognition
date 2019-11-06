@@ -9,7 +9,7 @@ def extract_features(image_path, vector_size=32):
     image = cv2.imread(image_path, 1)
     try:
         # Using KAZE Algorithm
-        alg = cv2.KAZE_create()
+        alg = cv2.AKAZE_create()
         kps = alg.detect(image)
 
         # Getting 32 dominant feature vectors 
