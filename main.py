@@ -13,7 +13,7 @@ def show_img(path):
 
 os.system('cls')
 
-images_path = 'resources/images/'
+images_path = 'resources/Database/pins-face-recognition/PINS'
 
 # Making sorted filename array
 files = [os.path.join(images_path, p) for p in sorted(os.listdir(images_path))]

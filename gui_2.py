@@ -47,11 +47,11 @@ class StartPage(tk.Frame):
         label = tk.Label(self, text="Choose a method: ")
         label.grid(row=0, column=1)
 
-        r = tk.IntVar()
-        rbutton1 = tk.Radiobutton(self, text="Euclidean Distance", variable=r, value=1, width=20).grid(row=3, column=1)
-        rbutton2 = tk.Radiobutton(self, text="Cosine Similarity", variable=r, value=2, width=20).grid(row=4, column=1)
-        button1 = tk.Button(self, text="OK", command=lambda: master.switch_frame(cosMethod) if r==1 else master.switch_frame(eucliMethod), height=1, width=10).grid(row=5, column=1)
-        checkbox = tk.Checkbutton(self, text="Randomize Input", width=24).grid(row=6,column=1)
+        self.r = tk.IntVar()
+        rbutton1 = tk.Radiobutton(self, text="Euclidean Distance", variable=self.r, value=1, width=20).grid(row=1, column=3)
+        rbutton2 = tk.Radiobutton(self, text="Cosine Similarity", variable=self.r, value=2, width=20).grid(row=1, column=4)
+        button1 = tk.Button(self, text="OK", command=lambda: master.switch_frame(cosMethod) if self.r==1 else master.switch_frame(eucliMethod), height=1, width=10).grid(row=1, column=5)
+        checkbox = tk.Checkbutton(self, text="Randomize Input", width=24).grid(row=1,column=6)
 
         self.labelFrame = ttk.LabelFrame(self)
         self.button()
@@ -80,8 +80,8 @@ class StartPage(tk.Frame):
 class eucliMethod(tk.Frame):
     pic = 0
     mark = 0
-    images_path = 'resources/images/'
-    files = [os.path.join('resources/images/', p) for p in sorted(os.listdir('resources/images/'))]
+    images_path = 'resources/query/'
+    files = [os.path.join('resources/query/', p) for p in sorted(os.listdir('resources/query/'))]
     sample = random.sample(files,10)
     img = None
 
