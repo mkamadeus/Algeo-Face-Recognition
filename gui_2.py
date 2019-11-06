@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import ttk
+from tkinter import filedialog
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -26,9 +28,20 @@ class faceRecognition(tk.Tk):
         self._frame.pack()
 
 class StartPage(tk.Frame):
+    filename = None
+    img = None
+
+    def showImage(self,filename):
+        im = Image.open(filename)
+        im = im.resize((300,300), Image.ANTIALIAS)
+        tkimage = ImageTk.PhotoImage(im)
+        self.img = Button(self, image=tkimage, command=filename)
+        self.img.image=tkimage 
+        self.img.grid(row=3,column=3)
+
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.geometry("500x200")
+        master.geometry("1000x1000")
         label = tk.Label(self, text="Choose a method: ")
         label.grid(row=0, column=1)
 
@@ -37,7 +50,27 @@ class StartPage(tk.Frame):
         rbutton2 = tk.Radiobutton(self, text="Cosine Similarity", variable=r, value=2, width=20).grid(row=3, column=1)
         button1 = tk.Button(self, text="OK", command=lambda: master.switch_frame(cosMethod) if r==1 else master.switch_frame(eucliMethod), height=1, width=10).grid(row=2, column=3)
         checkbox = tk.Checkbutton(self, text="Randomize Input", width=24).grid(row=4,column=3)
+
+        self.labelFrame = ttk.LabelFrame(self, text = "Open File")
+        self.labelFrame.grid(column = 0, row = 1, padx = 20, pady = 20)
+        self.button()
+        
         self.grid_columnconfigure(0, minsize=16)
+
+    def button(self):
+        self.button = ttk.Button(self, text= "Browse A File", command= self.fileDialog)
+        self.button.grid(column = 1, row = 1)
+    
+    def fileDialog(self):
+        self.filename = filedialog.askopenfilename(initialdir =  "/", title = "Select A File", filetype = (("jpeg files","*.jpg"),("all files","*.*")) )
+        self.label = ttk.Label(self.labelFrame, text = "")
+        self.label.grid(column = 1, row = 2)
+        self.label.configure(text = self.filename)
+        print(self.filename)
+        if self.img is not None:
+            self.img.destroy()
+        if self.filename is not None:
+            self.showImage(self.filename)
 
 class eucliMethod(tk.Frame):
     pic = 0
@@ -56,7 +89,7 @@ class eucliMethod(tk.Frame):
         
         if self.img is not None:
             self.img.destroy()
-   
+
         tkimage = ImageTk.PhotoImage(im)
         self.img = Button(self, image=tkimage, command=os.path.join(self.images_path, names_cosine[self.pic]))
         self.img.image=tkimage
