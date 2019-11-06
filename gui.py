@@ -40,11 +40,34 @@ class Start(tk.Frame):
         r = tk.IntVar()
         rbutton1 = ttk.Radiobutton(self, text="Euclidean Distance", variable=r, value=1, width=20).grid(row=2, column=1)
         rbutton2 = ttk.Radiobutton(self, text="Cosine Similarity", variable=r, value=2, width=20).grid(row=3, column=1)
+        which_button_is_selected = r.get()
+        print(which_button_is_selected)
 
-        button1 = ttk.Button(self, text="OK", command=lambda: controller.showFrame(eucliMethod) if r==2 else controller.showFrame(eucliMethod)).grid(row=2, column=3)
-        checkbox = tk.Checkbutton(self, text="Randomize Input", width=24).grid(row=4,column=3)
+        button1 = ttk.Button(self, text="OK", command=lambda: controller.showFrame(eucliMethod) if (which_button_is_selected)==1 else controller.showFrame(cosMethod))
+        button1.grid(row=2, column=3)
+
+        checkbox = tk.Checkbutton(self, text="Randomize Input", width=24)
+        checkbox.grid(row=4,column=3)
 
         self.grid_columnconfigure(0, minsize=16)
+
+class Browse(tk.Frame):
+    def __init__(self):
+        super(Browse, self).__init__()
+        self.minsize(640,400)
+
+        labelFrame = ttk.LabelFrame(self, text="Choose a Picture")
+        labelFrame.grid(row=1, column=1, padx=20, pady=20)
+
+    def buttonToBrowse(self):
+        button1 = ttk.Button(self, text="Browse File",command=self.fileBrowse())
+        button1.grid(row=2,column=1)
+
+    def fileBrowse(self):
+        filename = filedialog.askopenfilename(initialdir="/", title="Select a File", filetype=(("jpeg","*.jpg"), ("All Files", "*.*")))
+        label = ttk.Label(labelFrame, text="")
+        label.grid(row=2, column=2)
+        label.configure(text=filename)
 
 class eucliMethod(tk.Frame):
     def __init__ (self, parent, controller):
@@ -52,7 +75,8 @@ class eucliMethod(tk.Frame):
         label = tk.Label(self, text="Euclidean Distance")
         label.pack(pady=10, padx=10)
 
-        button1 = tk.Button(self, text="Prev").pack()
+        button1 = tk.Button(self, text="Prev")
+        button1.pack()
 
         button2 = tk.Button(self, text="Next")
         button2.pack()
@@ -60,7 +84,7 @@ class eucliMethod(tk.Frame):
         button3 = tk.Button(self, text="Back to The Start Page", command=lambda: controller.showFrame(Start))
         button3.pack()
 
-        img_arr = mpimg.imread('resources/images/alexandra daddario0.jpg')
+        img_arr = mpimg.imread('resources/images/pins-face-recognition/PINS/pins_Aaron Paul/Aaron Paul0_262.jpg')
         
         f = Figure()
         a = f.add_subplot(111)
