@@ -41,6 +41,7 @@ def batch_extractor(images_path, pickled_db_path="features.json"):
     for f in files:
         print('Extracting features from image %s' % f)
         name = f.split('/')[-1].lower()
+        print(name)
         result[name] = extract_features(f)
 
     # Save pickled feature vector

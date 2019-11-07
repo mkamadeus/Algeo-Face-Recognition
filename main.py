@@ -22,9 +22,8 @@ def printAsDecimal(val):
     print(round(val,4))
 
 settings = pi.promptInput()
-
-query_path = 'resources/query/'
 database_path = 'resources/database/'
+query_path = 'resources/query/'
 
 database_images = [os.path.join(database_path, p) for p in sorted(os.listdir(database_path))]
 query_images = [os.path.join(query_path, p) for p in sorted(os.listdir(query_path))]
@@ -38,8 +37,6 @@ ma = fm.Matcher('features.json')
 
 # Getting random images for query 
 sample = random.sample(query_images, 1)
-
-print(sample)
 
 # Setting threshold
 threshold = 0.0
