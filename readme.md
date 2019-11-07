@@ -3,8 +3,8 @@
 
 First and foremost, huge thanks to our lecturer for guiding us through the process of making this program.
 
-<div style="text-align:center">
-    <img src="https://stei.itb.ac.id/wp-content/uploads/4x6-Ir_-Rinaldi-Munir-MT.jpg" style="width:200px;height:auto;box-shadow:2px 4px 5px rgba(0,0,0,0.3)">
+<p align="center">
+    <img src="https://stei.itb.ac.id/wp-content/uploads/4x6-Ir_-Rinaldi-Munir-MT.jpg" style="box-shadow:2px 4px 5px rgba(0,0,0,0.3)" width="200">
     <br>
     <em>Pak Rinaldi Munir</em>
 </div>
