@@ -2,7 +2,7 @@ import math
 import pickle
 import numpy as np
 import featureExtraction as fe
-import scipy.spatial
+import scipy
 
 class Matcher(object):
 
