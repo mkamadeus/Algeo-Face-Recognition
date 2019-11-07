@@ -49,7 +49,7 @@ class StartPage(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
-        master.geometry("500x500")
+        master.geometry("1000x500")
         master.configure(background="AntiqueWhite1")
         self.configure(background="AntiqueWhite1")
         label1 = tk.Label(self, text="FACE RECOGNITION", font=("Calibri 20 bold"),fg="#F81894",bg="AntiqueWhite1",pady=10)
@@ -100,7 +100,6 @@ class eucliMethod(tk.Frame):
     database_images = [os.path.join('resources/database/', p) for p in sorted(os.listdir('resources/database/'))]
     query_images = [os.path.join('resources/query/', p) for p in sorted(os.listdir('resources/query/'))]
 
-    print("aw = " + str(StartPage.filename))
     sample = []
     img = None
 
@@ -109,6 +108,7 @@ class eucliMethod(tk.Frame):
     img_arr = None
     im = None
 
+    
     def nexts(self):
         self.pic= (self.pic+1) % 5
         self.img_arr = mpimg.imread(os.path.join(self.database_path, self.names_cosine[self.pic]))
@@ -124,6 +124,12 @@ class eucliMethod(tk.Frame):
         self.img.image=tkimage
         self.img.pack()
 
+        k = self.match_cosine[self.pic-1]
+        kD = float(k)
+        kD *= 100
+        
+        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#F81894", bg="AntiqueWhite1", pady=10)
+
     def prev(self):
         self.pic= (self.pic-1) % 5
         self.img_arr = mpimg.imread(os.path.join(self.database_path, self.names_cosine[self.pic]))
@@ -138,6 +144,12 @@ class eucliMethod(tk.Frame):
         self.img = Button(self, image=tkimage, command=os.path.join(self.database_path, self.names_cosine[self.pic]))
         self.img.image=tkimage
         self.img.pack()
+
+        k = self.match_cosine[self.pic-1]
+        kD = float(k)
+        kD *= 100
+
+        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#F81894", bg="AntiqueWhite1", pady=10)
 
     def __init__(self, master):
         master.geometry("500x500")
@@ -158,6 +170,9 @@ class eucliMethod(tk.Frame):
         button3 = tk.Button(self, text="Back to The Start Page", command=lambda: master.switch_frame(StartPage))
         button3.pack()
 
+        self.label1 = tk.Label(self, text="Match", font=("Calibri 20 bold"), fg="#F81894", bg="AntiqueWhite1", pady=10)
+        self.label1.pack()
+
 class cosMethod(tk.Frame):
     pic = 0
     mark = 0
@@ -170,7 +185,6 @@ class cosMethod(tk.Frame):
     database_images = [os.path.join('resources/database/', p) for p in sorted(os.listdir('resources/database/'))]
     query_images = [os.path.join('resources/query/', p) for p in sorted(os.listdir('resources/query/'))]
 
-    print("aw = " + str(StartPage.filename))
     sample = []
     img = None
 
@@ -193,6 +207,12 @@ class cosMethod(tk.Frame):
         self.img = Button(self, image=tkimage, command=os.path.join(self.database_path, self.names_cosine[self.pic]))
         self.img.image=tkimage
         self.img.pack()
+        
+        k = self.match_cosine[self.pic-1]
+        kD = float(k)
+        kD *= 100
+
+        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#F81894", bg="AntiqueWhite1", pady=10)
 
     def prev(self):
         self.pic= (self.pic-1) % 5
@@ -208,6 +228,12 @@ class cosMethod(tk.Frame):
         self.img = Button(self, image=tkimage, command=os.path.join(self.database_path, self.names_cosine[self.pic]))
         self.img.image=tkimage
         self.img.pack()
+
+        k = self.match_cosine[self.pic-1]
+        kD = float(k)
+        kD *= 100
+
+        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#F81894", bg="AntiqueWhite1", pady=10)
 
     def __init__(self, master):
         master.geometry("500x500")
@@ -227,6 +253,9 @@ class cosMethod(tk.Frame):
 
         button3 = tk.Button(self, text="Back to The Start Page", command=lambda: master.switch_frame(StartPage))
         button3.pack()
+
+        self.label1 = tk.Label(self, text="Match", font=("Calibri 20 bold"), fg="#F81894", bg="AntiqueWhite1", pady=10)
+        self.label1.pack()
 
 if __name__ == "__main__":
     app = faceRecognition()

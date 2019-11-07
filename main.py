@@ -19,13 +19,9 @@ def printAsPercentage(val):
     print(round(val*100,2),end='')
     print('%')
 
-<<<<<<< HEAD
 def printAsDecimal(val):
     print('Match : ',end='')
     print(round(val,4))
-=======
-images_path = 'resources/Database/pins-face-recognition/PINS'
->>>>>>> user-interface
 
 settings = pi.promptInput()
 database_path = 'resources/database/'
