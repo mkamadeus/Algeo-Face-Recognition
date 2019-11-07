@@ -142,27 +142,34 @@ class eucliMethod(tk.Frame):
         kD = float(k)
         kD *= 100
 
-        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#F81894", bg="AntiqueWhite1", pady=10)
+        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#80CBC4", bg="#455A64", pady=10)
 
     def __init__(self, master):
         master.geometry("500x500")
-        self.configure(background="#455A64")
+        # self.configure(background="#455A64")
         self.ma = fm.Matcher('features.json')
         print(self.sample)
         self.names_cosine, self.match_cosine = self.ma.match_euclidean_similarity(self.sample[self.count], topn=5)
         tk.Frame.__init__(self, master)
+        master.configure(background="#455A64")
+        self.configure(bg="#455A64")
+
 
         label = tk.Label(self, text="Euclidean Distance")
         label.pack(pady=10, padx=10)
+        label.configure(bg="#455A64", fg="#80CBC4")
 
         button1 = tk.Button(self, text="Prev", command=self.prev)
         button1.pack()
+        button1.configure(background="#B0BEC5")
 
         button2 = tk.Button(self, text="Next", command=self.nexts)
         button2.pack()
+        button2.configure(background="#B0BEC5")
 
         button3 = tk.Button(self, text="Back to The Start Page", command=lambda: master.switch_frame(StartPage))
         button3.pack()
+        button3.configure(background="#B0BEC5")
 
         self.label1 = tk.Label(self, text="Match", font=("Calibri 20 bold"), fg="#80CBC4", bg="#455A64", pady=10)
         self.label1.pack()
@@ -206,7 +213,7 @@ class cosMethod(tk.Frame):
         kD = float(k)
         kD *= 100
 
-        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#F81894", bg="#455A64", pady=10)
+        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#80CBC4", bg="#455A64", pady=10)
 
     def prev(self):
         self.pic= (self.pic-1) % 5
@@ -231,22 +238,24 @@ class cosMethod(tk.Frame):
 
     def __init__(self, master):
         master.geometry("500x500")
-        self.configure(background="#455A64")
+        # self.configure(background="#455A64")
         self.ma = fm.Matcher('features.json')
         print(self.sample)
         self.names_cosine, self.match_cosine = self.ma.match_cosine_similarity(self.sample[self.count], topn=5)
         tk.Frame.__init__(self, master)
+        master.configure(background="#455A64")
+        self.configure(bg="#455A64")
 
         label = tk.Label(self, bg="#455A64", fg="#80CBC4", text="Cosine Similarity")
         label.pack(pady=10, padx=10)
 
-        button1 = tk.Button(self, text="Prev", command=self.prev)
+        button1 = tk.Button(self, bg="#B0BEC5", text="Prev", command=self.prev)
         button1.pack()
 
-        button2 = tk.Button(self, text="Next", command=self.nexts)
+        button2 = tk.Button(self, bg="#B0BEC5", text="Next", command=self.nexts)
         button2.pack()
 
-        button3 = tk.Button(self, text="Back to The Start Page", command=lambda: master.switch_frame(StartPage))
+        button3 = tk.Button(self, bg="#B0BEC5", text="Back to The Start Page", command=lambda: master.switch_frame(StartPage))
         button3.pack()
 
         self.label1 = tk.Label(self, text="Match", font=("Calibri 20 bold"), fg="#80CBC4", bg="#455A64", pady=10)
