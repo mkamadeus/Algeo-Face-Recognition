@@ -2,6 +2,7 @@ import cv2
 import os
 import numpy as np
 import pickle
+import json
 
 # Feature extractor
 def extract_features(image_path, vector_size=32):
@@ -30,10 +31,10 @@ def extract_features(image_path, vector_size=32):
         print('Error: ', e)
         return None
 
-    return dsc
+    return dsc.tolist()
 
 
-def batch_extractor(images_path, pickled_db_path="features.pck"):
+def batch_extractor(images_path, pickled_db_path="features.json"):
     files = [os.path.join(images_path, p) for p in sorted(os.listdir(images_path))]
 
     result = {}
@@ -41,7 +42,7 @@ def batch_extractor(images_path, pickled_db_path="features.pck"):
         print('Extracting features from image %s' % f)
         name = f.split('/')[-1].lower()
         result[name] = extract_features(f)
-    
+
     # Save pickled feature vector
-    with open(pickled_db_path, 'wb') as fp:
-        pickle.dump(result, fp)
+    with open(pickled_db_path, 'w') as fp:
+        json.dump(result, fp, sort_keys=True, indent=4)

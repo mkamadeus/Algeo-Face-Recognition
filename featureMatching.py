@@ -3,13 +3,14 @@ import pickle
 import numpy as np
 import featureExtraction as fe
 import scipy.spatial
+import json
 
 class Matcher(object):
 
-    def __init__(self, pickled_db_path="features.pck"):
+    def __init__(self, pickled_db_path="features.json"):
         # Load pickled feature vector
-        with open(pickled_db_path, 'rb') as fp:
-            self.data = pickle.load(fp)
+        with open(pickled_db_path, 'r') as fp:
+            self.data = json.load(fp)
 
         self.names = []
         self.features = []
@@ -22,9 +23,6 @@ class Matcher(object):
         # Convert array to NumPy array
         self.names = np.array(self.names)
         self.features = np.array(self.features)
-
-    def debug(self):
-        print(self.data)
 
     # Euclidean Similarity Algorithm
     def euclidean_distance(self, vector):
@@ -91,11 +89,10 @@ class Matcher(object):
     def match_euclidean_similarity(self, image_path, topn=5):
         # Compare image_path with other images
         features = fe.extract_features(image_path)
-        img_distances = self.euclidean_distance(features)
+        img_distances = self.euclidean_distance(np.array(features))
 
         # Slice list with len() = topn after sorted descending
         nearest_img_index = np.argsort(img_distances)[::-1][:topn].tolist()
-        print(nearest_img_index)
         nearest_img_paths = self.names[nearest_img_index].tolist()
 
         return nearest_img_paths, img_distances[nearest_img_index].tolist()
@@ -103,7 +100,7 @@ class Matcher(object):
     def match_cosine_similarity(self, image_path, topn=5):
         # Compare image_path with other images
         features = fe.extract_features(image_path)
-        img_distances = self.cosine_similarity(features)
+        img_distances = self.cosine_similarity(np.array(features))
 
         # Slice list with len() = topn after sorted descending
         nearest_img_index = np.argsort(img_distances)[::-1][:topn].tolist()

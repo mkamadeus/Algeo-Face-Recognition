@@ -21,7 +21,6 @@ def printAsDecimal(val):
     print('Match : ',end='')
     print(round(val,4))
 
-
 settings = pi.promptInput()
 images_path = 'resources/images/'
 files = [os.path.join(images_path, p) for p in sorted(os.listdir(images_path))]
@@ -31,7 +30,7 @@ if(settings['extract_database']):
     fe.batch_extractor(images_path)
 
 # Image matching
-ma = fm.Matcher('features.pck')
+ma = fm.Matcher('features.json')
 
 # Getting random images for query 
 sample = random.sample(files, 1)

@@ -14,10 +14,10 @@ style = style_from_dict({
 })
 
 def promptInput():
-    os.system('cls')
-    ss.printPakRinaldi()
+    # os.system('cls')
+    # ss.printPakRinaldi()
 
-    os.system('cls')
+    # os.system('cls')
 
     questions = [
     {
