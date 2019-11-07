@@ -37,8 +37,6 @@ def printPakRinaldi():
                                                .%..,,,*/,,,                      
     """)
     print()
-    print()
-    print()
     time.sleep(2)
     print('Face Recognition with OpenCV'.center(columns))
     time.sleep(2)

@@ -2,6 +2,8 @@ import cv2
 import matplotlib.pyplot as plt
 import random
 import os
+from tkinter import filedialog
+from tkinter import *
 
 import promptInput as pi
 import featureExtraction as fe
@@ -35,8 +37,16 @@ if(settings['extract_database']):
 # Image matching
 ma = fm.Matcher('features.json')
 
+
 # Getting random images for query 
-sample = random.sample(query_images, 1)
+sample = []
+if(settings['randomize']==True):
+    sample = random.sample(query_images, 1)
+else:
+    root = Tk()
+    root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("jpeg files","*.jpg"),("all files","*.*")))
+    sample = [root.filename]
+    root.destroy()
 
 # Setting threshold
 threshold = 0.0

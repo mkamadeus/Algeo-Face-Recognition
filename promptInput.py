@@ -14,10 +14,10 @@ style = style_from_dict({
 })
 
 def promptInput():
-    # os.system('cls')
-    # ss.printPakRinaldi()
+    os.system('cls')
+    ss.printPakRinaldi()
 
-    # os.system('cls')
+    os.system('cls')
 
     questions = [
     {
@@ -56,6 +56,12 @@ def promptInput():
         'choices': ['Strict','Loose'],
         'default': 'percentage',
         'filter': lambda val: val.lower()
+    },
+    {
+        'type': 'confirm',
+        'name': 'randomize',
+        'message': 'Randomize query?:',
+        'default': True,
     },
     ]
 
