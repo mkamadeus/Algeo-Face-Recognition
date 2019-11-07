@@ -40,9 +40,12 @@ pip install numpy
 pip install numpy
 ```
 
-
 #### Using the CLI
 Simply run `main.py` by typing
 ```bash
 python main.py
 ```
+#### Using the face recognition
+1. Make a folder called `resources` in the root directory.
+2. Make two folders inside, `query` and `database`.
+3. Put the images in the two folders, depending on what you want the image to be (as a query, or as a database).
