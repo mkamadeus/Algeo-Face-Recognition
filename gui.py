@@ -41,25 +41,18 @@ class StartPage(tk.Frame):
         self.img.image=tkimage 
         self.img.grid(row=2,column=1)
 
-    def call_result(self,label_result, n1):  
-        num1 = (n1.get())  
-        result = int(num1)
-        label_result.config(text="Result = %d" % result)  
-        return
-
     def __init__(self, master):
         tk.Frame.__init__(self, master)
         master.geometry("1000x500")
-        master.configure(background="AntiqueWhite1")
-        self.configure(background="AntiqueWhite1")
-        label1 = tk.Label(self, text="FACE RECOGNITION", font=("Calibri 20 bold"),fg="#F81894",bg="AntiqueWhite1",pady=10)
+        self.configure(background="#455A64")
+        label1 = tk.Label(self, text="FACE RECOGNITION", font=("Calibri 20 bold"),fg="#80CBC4",bg="#455A64",pady=10)
         label1.grid(row=0,column=0,columnspan=3)
 
-        label2 = tk.Label(self, text="Choose a method: ",background="AntiqueWhite1",font=("Roboto 8"))
+        label2 = tk.Label(self, text="Choose a method: ",background="#455A64",font=("Roboto 8"))
         label2.grid(row=5, column=0, sticky="w")
 
-        button1 = tk.Button(self, text="Euclidean Distance", font=("Roboto 10"),command=lambda:master.switch_frame(eucliMethod), width=20,background="#B8E2F2").grid(row=6, column=0, padx=10)
-        button2 = tk.Button(self, text="Cosine Similarity", font=("Roboto 10"),command=lambda:master.switch_frame(cosMethod), width=20,background="#B8E2F2").grid(row=6, column=2,padx=10)
+        button1 = tk.Button(self, text="Euclidean Distance", font=("Roboto 10"),command=lambda:master.switch_frame(eucliMethod), width=20,background="#B0BEC5").grid(row=6, column=0, padx=10)
+        button2 = tk.Button(self, text="Cosine Similarity", font=("Roboto 10"),command=lambda:master.switch_frame(cosMethod), width=20,background="#B0BEC5").grid(row=6, column=2,padx=10)
 
         self.labelFrame = ttk.LabelFrame(self)
         self.button()
@@ -120,7 +113,7 @@ class eucliMethod(tk.Frame):
 
         #Show image
         tkimage = ImageTk.PhotoImage(self.im)
-        self.img = Button(self, image=tkimage, command=os.path.join(self.database_path, self.names_cosine[self.pic]))
+        self.img = Button(self, bg="#B0BEC5", image=tkimage, command=os.path.join(self.database_path, self.names_cosine[self.pic]))
         self.img.image=tkimage
         self.img.pack()
 
@@ -128,7 +121,7 @@ class eucliMethod(tk.Frame):
         kD = float(k)
         kD *= 100
         
-        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#F81894", bg="AntiqueWhite1", pady=10)
+        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#80CBC4", bg="#455A64", pady=10)
 
     def prev(self):
         self.pic= (self.pic-1) % 5
@@ -141,7 +134,7 @@ class eucliMethod(tk.Frame):
 
         #Show image
         tkimage = ImageTk.PhotoImage(self.im)
-        self.img = Button(self, image=tkimage, command=os.path.join(self.database_path, self.names_cosine[self.pic]))
+        self.img = Button(self, bg="#B0BEC5", image=tkimage, command=os.path.join(self.database_path, self.names_cosine[self.pic]))
         self.img.image=tkimage
         self.img.pack()
 
@@ -153,6 +146,7 @@ class eucliMethod(tk.Frame):
 
     def __init__(self, master):
         master.geometry("500x500")
+        self.configure(background="#455A64")
         self.ma = fm.Matcher('features.json')
         print(self.sample)
         self.names_cosine, self.match_cosine = self.ma.match_euclidean_similarity(self.sample[self.count], topn=5)
@@ -170,7 +164,7 @@ class eucliMethod(tk.Frame):
         button3 = tk.Button(self, text="Back to The Start Page", command=lambda: master.switch_frame(StartPage))
         button3.pack()
 
-        self.label1 = tk.Label(self, text="Match", font=("Calibri 20 bold"), fg="#F81894", bg="AntiqueWhite1", pady=10)
+        self.label1 = tk.Label(self, text="Match", font=("Calibri 20 bold"), fg="#80CBC4", bg="#455A64", pady=10)
         self.label1.pack()
 
 class cosMethod(tk.Frame):
@@ -204,7 +198,7 @@ class cosMethod(tk.Frame):
 
         #Show image
         tkimage = ImageTk.PhotoImage(self.im)
-        self.img = Button(self, image=tkimage, command=os.path.join(self.database_path, self.names_cosine[self.pic]))
+        self.img = Button(self, bg="#B0BEC5", image=tkimage, command=os.path.join(self.database_path, self.names_cosine[self.pic]))
         self.img.image=tkimage
         self.img.pack()
         
@@ -212,7 +206,7 @@ class cosMethod(tk.Frame):
         kD = float(k)
         kD *= 100
 
-        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#F81894", bg="AntiqueWhite1", pady=10)
+        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#F81894", bg="#455A64", pady=10)
 
     def prev(self):
         self.pic= (self.pic-1) % 5
@@ -225,7 +219,7 @@ class cosMethod(tk.Frame):
 
         #Show image
         tkimage = ImageTk.PhotoImage(self.im)
-        self.img = Button(self, image=tkimage, command=os.path.join(self.database_path, self.names_cosine[self.pic]))
+        self.img = Button(self, bg="#B0BEC5", image=tkimage, command=os.path.join(self.database_path, self.names_cosine[self.pic]))
         self.img.image=tkimage
         self.img.pack()
 
@@ -233,16 +227,17 @@ class cosMethod(tk.Frame):
         kD = float(k)
         kD *= 100
 
-        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#F81894", bg="AntiqueWhite1", pady=10)
+        self.label1.configure(text="{0:.3f}".format(kD)+"%", font=("Calibri 20 bold"), fg="#80CBC4", bg="#455A64", pady=10)
 
     def __init__(self, master):
         master.geometry("500x500")
+        self.configure(background="#455A64")
         self.ma = fm.Matcher('features.json')
         print(self.sample)
         self.names_cosine, self.match_cosine = self.ma.match_cosine_similarity(self.sample[self.count], topn=5)
         tk.Frame.__init__(self, master)
 
-        label = tk.Label(self, text="Euclidean Distance")
+        label = tk.Label(self, bg="#455A64", fg="#80CBC4", text="Cosine Similarity")
         label.pack(pady=10, padx=10)
 
         button1 = tk.Button(self, text="Prev", command=self.prev)
@@ -254,7 +249,7 @@ class cosMethod(tk.Frame):
         button3 = tk.Button(self, text="Back to The Start Page", command=lambda: master.switch_frame(StartPage))
         button3.pack()
 
-        self.label1 = tk.Label(self, text="Match", font=("Calibri 20 bold"), fg="#F81894", bg="AntiqueWhite1", pady=10)
+        self.label1 = tk.Label(self, text="Match", font=("Calibri 20 bold"), fg="#80CBC4", bg="#455A64", pady=10)
         self.label1.pack()
 
 if __name__ == "__main__":
