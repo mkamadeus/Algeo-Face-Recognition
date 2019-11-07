@@ -2,8 +2,12 @@ import math
 import pickle
 import numpy as np
 import featureExtraction as fe
+<<<<<<< HEAD
 import scipy.spatial
 import json
+=======
+import scipy
+>>>>>>> user-interface
 
 class Matcher(object):
 
